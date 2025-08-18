@@ -1,9 +1,13 @@
 import './App.css';
 
+import { Button } from 'react-bootstrap';
+
 function App() {
   return (
     <div className="App">
-      Stat the project
+      <Button variant="primary">
+        Stat the project
+      </Button>
     </div>
   );
 }
