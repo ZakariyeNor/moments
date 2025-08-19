@@ -34,7 +34,7 @@ const SignUpForm = () => {
             history.push('/signin')
         } catch(err) {
             console.log("Error response:", err.response?.data);
-            setErrors(err.response?.data || {});
+            setErrors(err.response?.data);
         }
     }
     return (
