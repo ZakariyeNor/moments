@@ -6,11 +6,13 @@ import { Link, useHistory } from "react-router-dom";
 import styles from "../../styles/SignInUpForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
-import { eventWrapper } from "@testing-library/user-event/dist/utils";
 import axios from "axios";
+import { useSetCurrentUser } from "../../context/CurrentUserContext";
 
 function SignInForm() {
     //   Add your component logic here
+    const setCurrentUser = useSetCurrentUser();
+
     const [signInData, setSignInData] = useState({
         username: '',
         password: ''
@@ -29,12 +31,21 @@ function SignInForm() {
     const handleChangeSubmit = async (events) => {
         events.preventDefault();
         try {
-            await axios.post('/dj-rest-auth/login/', signInData);
-            history2.push('/')
-        } catch (erro) {
-            setErrors(erro.response?.data)
+            const { data } = await axios.post('/dj-rest-auth/login/', signInData);
+
+            // Save tokens so they persist after refresh
+            localStorage.setItem("access", data.access);
+            localStorage.setItem("refresh", data.refresh);
+
+            // Save user in state
+            setCurrentUser(data.user);
+
+            history2.push('/');
+        } catch (error) {
+            setErrors(error.response?.data);
         }
-    }
+    };
+
 
     return (
         <Row className={styles.Row}>
