@@ -33,10 +33,6 @@ function SignInForm() {
         try {
             const { data } = await axios.post('/dj-rest-auth/login/', signInData);
 
-            // Save tokens so they persist after refresh
-            localStorage.setItem("access", data.access);
-            localStorage.setItem("refresh", data.refresh);
-
             // Save user in state
             setCurrentUser(data.user);
 
